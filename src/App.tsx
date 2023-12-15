@@ -19,7 +19,7 @@ type LyricsResult = {
 } | {
   type: "error";
   message: string;
-};
+} | null;
 
 const App = (props: { controlParent: Element }) => {
   const [show, setShow] = createSignal(true);
@@ -33,6 +33,10 @@ const App = (props: { controlParent: Element }) => {
       title: songInfo.data?.title,
     };
   }, async (data) => {
+    if (!data.artist && !data.title && !data.album) {
+      return null;
+    }
+
     let searchData: Awaited<ReturnType<typeof search>>;
     try {
       searchData = await search({
@@ -127,24 +131,30 @@ const App = (props: { controlParent: Element }) => {
           height:
             "calc(100vh - var(--ytmusic-nav-bar-height) - var(--ytmusic-player-bar-height))",
           width: "400px",
-          "background-color": "black",
+          "background-color": "rgba(0, 0, 0, 0.8)",
           top: "var(--ytmusic-nav-bar-height)",
           right: 0,
           "z-index": 3,
           color: "white",
           "font-size": "medium",
+          padding: "10px",
         }}
       >
         <div>
           {songInfo.data?.title} - {songInfo.data?.artist[0]}
         </div>
-        <Switch fallback={<div>No lyrics</div>}>
+        <Switch fallback={<div>No song</div>}>
           <Match when={data.loading}>Loading...</Match>
           <Match when={data()}>
             {(data) => (
-              <Switch fallback={<div>unknown error</div>}>
+              <Switch fallback={<div>unexpected error</div>}>
                 <Match when={data().type == 1}>
-                  <div style={{ "white-space": "pre-wrap" }}>
+                  <div
+                    style={{
+                      "white-space": "pre-wrap",
+                      "overflow-y": "scroll",
+                    }}
+                  >
                     {(data() as any).data as string}
                   </div>
                 </Match>
