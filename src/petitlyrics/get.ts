@@ -40,21 +40,27 @@ export type GetParams = {
 export const getNotSyncedLyrics = async (options: GetParams) => {
   const res_o = await fetchApi({ ...options, lyricsType: 1 });
   const res = v.parse(ResponseSchema, res_o);
-  const lyricData = res.response.songs.song?.[0].lyricsData;
-  if (!lyricData) {
-    throw new Error("Lyric not found");
+  const song = res.response.songs.song?.[0];
+  if (!song) {
+    throw new Error("Song not found");
   }
-  return base64.decode(lyricData);
+
+  return {
+    data: base64.decode(song.lyricsData),
+    metaData: song,
+  };
 };
 
 const WordSyncedLyricsDataSchema = v.object({
   wsy: v.object({
     line: v.array(v.object({
+      linestring: v.string(),
       word: v.coerce(
         v.array(v.object({
           starttime: v.number(),
           endtime: v.number(),
           wordstring: v.coerce(v.string(), String),
+          chanum: v.number(),
         })),
         (v) => {
           if (!Array.isArray(v)) {
@@ -69,15 +75,20 @@ const WordSyncedLyricsDataSchema = v.object({
 export const getWordSyncedLyrics = async (options: GetParams) => {
   const res_o = await fetchApi({ ...options, lyricsType: 3 });
   const res = v.parse(ResponseSchema, res_o);
-  const lyricData = res.response.songs.song?.[0].lyricsData;
-  if (!lyricData) {
+  const song = res.response.songs.song?.[0];
+  if (!song) {
     throw new Error("Lyric not found");
   }
-  const lyricDataObj = xmlParser.parse(base64.decode(lyricData));
-  return v.parse(
+  const lyricDataObj = xmlParser.parse(base64.decode(song.lyricsData));
+  const data = v.parse(
     WordSyncedLyricsDataSchema,
     lyricDataObj,
   );
+
+  return {
+    data,
+    metaData: song,
+  };
 };
 
 export const getEncryptedLyrics = async (options: GetParams) => {

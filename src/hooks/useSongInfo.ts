@@ -20,7 +20,7 @@ export const useSongInfo = () => {
     if (!songInfoElement) {
       return;
     }
-    observer = new MutationObserver(() => {
+    const handler = () => {
       const title = songInfoElement.querySelector(".title")?.textContent;
       if (!title) {
         return;
@@ -48,11 +48,14 @@ export const useSongInfo = () => {
         artist,
         album,
       });
-    });
+    };
+    observer = new MutationObserver(handler);
     observer.observe(songInfoElement, {
       childList: true,
       subtree: true,
     });
+
+    handler();
   });
   onCleanup(() => {
     observer?.disconnect();
