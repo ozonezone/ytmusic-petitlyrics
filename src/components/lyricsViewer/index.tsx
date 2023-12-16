@@ -23,16 +23,20 @@ export const LyricsViewer = (
           "align-items": "center",
         }}
       >
-        {decode(props.data.lyrics.metaData.title)}
-        {" - "}
-        {decode(props.data.lyrics.metaData.artist)}{" "}
+        <div>
+          {decode(props.data.lyrics.metaData.title)}
+          {" - "}
+          {decode(props.data.lyrics.metaData.artist)}
+          {" "}
+        </div>
         <a
           href={"https://petitlyrics.com/lyrics/" +
             props.data.lyrics.metaData.lyricsId}
           target="_blank"
           rel="noreferrer noopener"
+          style={{ height: "20px", width: "20px" }}
         >
-          <ExternalLinkIcon width="18px" height="18px" />
+          <ExternalLinkIcon width="18px" height="18px" color="#00aaff" />
         </a>
       </div>
       <div

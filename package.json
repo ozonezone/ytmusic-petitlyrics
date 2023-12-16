@@ -15,7 +15,6 @@
     "vite-plugin-solid": "^2.8.0"
   },
   "dependencies": {
-    "@felte/solid": "^1.2.11",
     "@trim21/gm-fetch": "^0.1.15",
     "fast-xml-parser": "^4.3.2",
     "html-entities": "^2.4.0",

@@ -1,27 +1,20 @@
-import { createSignal, For } from "solid-js";
+import { createMemo, createSignal, For } from "solid-js";
 import { usePlayerInfo } from "../../hooks/usePlayerInfo";
 import { decode } from "html-entities";
 import { WordSyncLyricsData } from "../../lyrics";
-import { globalSettings } from "../../store";
+import { globalSettings, songConfig } from "../../store";
 
 export const WordSyncLyrics = (
   props: { lyrics: WordSyncLyricsData },
 ) => {
   const playerInfo = usePlayerInfo();
-  const [offset, setOffset] = createSignal(0);
+
+  const offset = createMemo(() => {
+    return songConfig.data?.offset ?? 0 + globalSettings.behavior.offset;
+  });
 
   return (
     <div style={{ height: "100%" }}>
-      <input
-        type="number"
-        value={offset()}
-        onInput={(e) => {
-          if (isNaN(e.currentTarget.valueAsNumber)) {
-            return;
-          }
-          setOffset(e.currentTarget.valueAsNumber);
-        }}
-      />
       <div
         style={{
           "overflow-y": "scroll",

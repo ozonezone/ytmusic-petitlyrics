@@ -28,7 +28,8 @@ export const usePlayerInfo = () => {
     slider = s as HTMLDivElement;
     video = v as HTMLVideoElement;
 
-    let prev = 0;
+    let prevTime = 0;
+    let prevSliderValue = -100;
     const handler = () => {
       let value = Number(slider.getAttribute("value"));
 
@@ -36,9 +37,11 @@ export const usePlayerInfo = () => {
         return;
       }
 
-      const delta = performance.now() - prev;
-      prev = performance.now();
-      if (1500 <= delta && delta <= 2500) {
+      const delta = performance.now() - prevTime;
+      const sliderDelta = value - prevSliderValue;
+      prevTime = performance.now();
+      prevSliderValue = value;
+      if (1500 <= delta && delta <= 2500 && sliderDelta == 2) {
         if (playerInfo.data!.currentTime < value) {
           return;
         }

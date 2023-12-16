@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import solidPlugin from "vite-plugin-solid";
-import monkey from "vite-plugin-monkey";
+import monkey, { cdn } from "vite-plugin-monkey";
 
 export default defineConfig({
   plugins: [
@@ -8,12 +8,14 @@ export default defineConfig({
     monkey({
       entry: "src/index.tsx",
       userscript: {
-        // icon: "https://vitejs.dev/logo.svg",
-        namespace: "npm/ytmusic-petitlyrics",
+        namespace: "ytmusic-petitlyrics",
         name: "YTMusic PetitLyrics",
         match: ["https://music.youtube.com/*"],
       },
       server: { mountGmApi: true },
     }),
   ],
+  build: {
+    minify: true,
+  },
 });

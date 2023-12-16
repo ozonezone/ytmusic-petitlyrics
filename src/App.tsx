@@ -1,17 +1,16 @@
 import { createResource, createSignal, Match, Show, Switch } from "solid-js";
 import { Portal } from "solid-js/web";
-import { useSongInfo } from "./hooks/useSongInfo";
 import { LyricIcon } from "./components/atom/LyricIcon";
 import { getLyrics, LyricsData } from "./lyrics";
 import { LyricsViewer } from "./components/lyricsViewer";
 import IconSettings from "./components/atom/SettingsIcon";
-import { GlobalSettings } from "./components/GlobalSettings";
+import { Settings } from "./components/settings";
+import { globalSettings, songInfo } from "./store";
+import IconChevronBarRight from "./components/atom/ChevronBarRightIcon";
 
 const App = (props: { controlParent: Element }) => {
   const [show, setShow] = createSignal(true);
   const [showSettings, setShowSettings] = createSignal(true);
-
-  const songInfo = useSongInfo();
 
   const [lyricsResult] = createResource(() => {
     return {
@@ -55,7 +54,8 @@ const App = (props: { controlParent: Element }) => {
             height:
               "calc(100vh - var(--ytmusic-nav-bar-height) - var(--ytmusic-player-bar-height))",
             width: "400px",
-            "background-color": "rgba(0, 0, 0, 0.8)",
+            "background-color":
+              `rgba(0, 0, 0, ${globalSettings.appearance.opacity})`,
             top: "var(--ytmusic-nav-bar-height)",
             right: 0,
             "z-index": 3,
@@ -87,17 +87,29 @@ const App = (props: { controlParent: Element }) => {
               >
                 <IconSettings width="15px" height="15px" />
               </button>
-            </div>
-            <Show when={showSettings()}>
-              <div
+              <button
                 style={{
-                  "border-bottom": "1px solid white",
-                  "margin-bottom": "5px",
+                  "background": "none",
+                  "border": "none",
+                  color: "white",
+                  width: "25px",
+                  height: "25px",
+                }}
+                onClick={() => {
+                  setShow(false);
                 }}
               >
-                <GlobalSettings />
-              </div>
-            </Show>
+                <IconChevronBarRight width="15px" height="15px" />
+              </button>
+            </div>
+            <div
+              style={{
+                "margin-bottom": "5px",
+                "display": showSettings() ? "block" : "none",
+              }}
+            >
+              <Settings />
+            </div>
           </div>
           <Switch fallback={<div>No song</div>}>
             <Match when={lyricsResult.loading}>Loading...</Match>
