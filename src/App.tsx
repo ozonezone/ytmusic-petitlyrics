@@ -7,10 +7,12 @@ import IconSettings from "./components/atom/SettingsIcon";
 import { Settings } from "./components/settings";
 import { globalSettings, songInfo } from "./store";
 import IconChevronBarRight from "./components/atom/ChevronBarRightIcon";
+import IconBxFullscreen from "./components/atom/FullScreenIcon";
 
 const App = (props: { controlParent: Element }) => {
   const [show, setShow] = createSignal(true);
   const [showSettings, setShowSettings] = createSignal(true);
+  const [fullWidth, setFullWidth] = createSignal(false);
 
   const [lyricsResult] = createResource(() => {
     return {
@@ -53,12 +55,12 @@ const App = (props: { controlParent: Element }) => {
             position: "fixed",
             height:
               "calc(100vh - var(--ytmusic-nav-bar-height) - var(--ytmusic-player-bar-height))",
-            width: "400px",
+            width: fullWidth() ? "100%" : "400px",
             "background-color":
               `rgba(0, 0, 0, ${globalSettings.appearance.opacity})`,
             top: "var(--ytmusic-nav-bar-height)",
             right: 0,
-            "z-index": 3,
+            "z-index": 4,
             color: "white",
             "font-size": "medium",
             padding: "0 10px",
@@ -86,6 +88,20 @@ const App = (props: { controlParent: Element }) => {
                 }}
               >
                 <IconSettings width="15px" height="15px" />
+              </button>
+              <button
+                style={{
+                  "background": "none",
+                  "border": "none",
+                  color: "white",
+                  width: "25px",
+                  height: "25px",
+                }}
+                onClick={() => {
+                  setFullWidth(!fullWidth());
+                }}
+              >
+                <IconBxFullscreen width="15px" height="15px" />
               </button>
               <button
                 style={{

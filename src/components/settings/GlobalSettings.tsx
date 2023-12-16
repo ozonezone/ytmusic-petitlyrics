@@ -20,6 +20,13 @@ export const GlobalSettings = () => {
         setter={(v) => setGlobalSettings("appearance", "align", v as any)}
         options={["left", "center", "right"]}
       />
+      <NumberForm
+        value={globalSettings.behavior.offset}
+        label="Global offset"
+        setter={(v) => {
+          setGlobalSettings("behavior", "offset", v);
+        }}
+      />
     </>
   );
 };

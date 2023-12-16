@@ -1,4 +1,4 @@
-import { createMemo, createSignal, For } from "solid-js";
+import { createEffect, createMemo, createSignal, For } from "solid-js";
 import { usePlayerInfo } from "../../hooks/usePlayerInfo";
 import { decode } from "html-entities";
 import { WordSyncLyricsData } from "../../lyrics";
@@ -10,7 +10,41 @@ export const WordSyncLyrics = (
   const playerInfo = usePlayerInfo();
 
   const offset = createMemo(() => {
-    return songConfig.data?.offset ?? 0 + globalSettings.behavior.offset;
+    return (songConfig.data?.offset ?? 0) + globalSettings.behavior.offset;
+  });
+
+  const pos = createMemo(() => {
+    const crr = playerInfo.data?.currentTime ?? 0;
+    let line_idx = 0;
+    for (let line of props.lyrics.data.wsy.line) {
+      let word_idx = 0;
+      for (let word of line.word) {
+        if (word.starttime > (crr + offset()) * 1000) {
+          return [line_idx, word_idx] as const;
+        }
+        word_idx++;
+      }
+      line_idx++;
+    }
+
+    return [
+      props.lyrics.data.wsy.line.length - 1,
+      props.lyrics.data.wsy.line[props.lyrics.data.wsy.line.length - 1].word
+        .length - 1,
+    ] as const;
+  });
+  const linePos = createMemo(() => pos()[0]);
+  const wordPos = createMemo(() => pos()[1]);
+
+  createEffect(() => {
+    const elm = document.getElementById("wsy-line-" + linePos());
+
+    if (elm) {
+      elm.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
   });
 
   return (
@@ -25,7 +59,16 @@ export const WordSyncLyrics = (
         <div style={{ "height": "50%" }} />
         <For each={props.lyrics.data.wsy.line}>
           {(line, i) => (
-            <div>
+            <div
+              id={"wsy-line-" + i()}
+              style={{
+                "background-color": i() === linePos()
+                  ? "rgba(128, 128, 128, 0.1)"
+                  : "transparent",
+                "font-size": i() === linePos() ? "large" : "medium",
+                "padding": i() === linePos() ? "5px 0" : "0",
+              }}
+            >
               <For each={line.word}>
                 {(word) => (
                   <span

@@ -1,5 +1,5 @@
 import { GM_getValue, GM_setValue } from "$";
-import { createStore } from "solid-js/store";
+import { createStore, unwrap } from "solid-js/store";
 import { useSongInfo } from "./hooks/useSongInfo";
 import { useSongConfig } from "./hooks/useSongConfig";
 
@@ -25,13 +25,13 @@ const defaultSettings: GlobalSettings = {
 };
 const [globalSettingsRaw, setGlobalSettingsRaw] = createStore<
   GlobalSettings
->(GM_getValue("globalSettings") ?? defaultSettings);
+>(GM_getValue("globalSettings") ?? structuredClone(defaultSettings));
 
 export const globalSettings = globalSettingsRaw;
-// wrap setglobalSettingsRaw to save settings to GM
 export const setGlobalSettings: typeof setGlobalSettingsRaw = (...v: any[]) => {
   //@ts-ignore
   setGlobalSettingsRaw(...v);
+
   GM_setValue("globalSettings", globalSettingsRaw);
 };
 
