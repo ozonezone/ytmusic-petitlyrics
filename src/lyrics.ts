@@ -1,3 +1,5 @@
+import { GM_getValue, GM_setValue } from "$";
+
 import { getNotSyncedLyrics, getWordSyncedLyrics } from "./petitlyrics/get";
 import { search } from "./petitlyrics/search";
 
@@ -5,21 +7,22 @@ export type SearchData = Awaited<ReturnType<typeof search>>;
 export type WordSyncLyricsData = Awaited<
   ReturnType<typeof getWordSyncedLyrics>
 >;
-export type NotSyncedLyricsData = Awaited<
+export type NonSyncLyricsData = Awaited<
   ReturnType<typeof getNotSyncedLyrics>
 >;
 export type Message = (string | Error)[];
-type LyricsResult = {
+export type LyricsData = {
   success: true;
   lyricsType: 1;
   message: Message;
-  data: NotSyncedLyricsData;
+  lyrics: NonSyncLyricsData;
 } | {
   success: true;
   lyricsType: 3;
   message: Message;
-  data: WordSyncLyricsData;
-} | {
+  lyrics: WordSyncLyricsData;
+};
+export type LyricsResult = LyricsData | {
   success: false;
   message: Message;
 } | null;
@@ -65,7 +68,7 @@ const fetchLyrices = async (query: LyricsQuery): Promise<LyricsResult> => {
       success: true,
       lyricsType: 3,
       message,
-      data: await getWordSyncedLyrics({ key_lyricsId: lyricsId }),
+      lyrics: await getWordSyncedLyrics({ key_lyricsId: lyricsId }),
     };
   } catch (e) {
     message.push(
@@ -76,7 +79,7 @@ const fetchLyrices = async (query: LyricsQuery): Promise<LyricsResult> => {
         success: true,
         lyricsType: 1,
         message,
-        data: await getNotSyncedLyrics({ key_lyricsId: lyricsId }),
+        lyrics: await getNotSyncedLyrics({ key_lyricsId: lyricsId }),
       };
     } catch (e) {
       message.push("Failed to get lyrics (fallback)" + e);
@@ -90,5 +93,18 @@ export const getLyrics = async (query: LyricsQuery) => {
     return null;
   }
 
-  return await fetchLyrices(query);
+  const key = "lyrics--" +
+    [query.artist ?? "", query.title ?? "", query.album ?? ""].join(
+      "--",
+    );
+
+  const cached = GM_getValue<LyricsResult>(key);
+  if (cached && cached.success) {
+    return cached;
+  } else {
+    console.log("Fetching: " + key);
+    const fetched = await fetchLyrices(query);
+    GM_setValue(key, fetched);
+    return fetched;
+  }
 };

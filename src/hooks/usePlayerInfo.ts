@@ -18,7 +18,6 @@ export const usePlayerInfo = () => {
   let video: HTMLVideoElement;
 
   let timer: null | number = null;
-  const offset = 0.3;
 
   onMount(() => {
     const s = document.querySelector("#progress-bar #sliderBar");
@@ -29,11 +28,25 @@ export const usePlayerInfo = () => {
     slider = s as HTMLDivElement;
     video = v as HTMLVideoElement;
 
+    let prev = 0;
     const handler = () => {
       let value = Number(slider.getAttribute("value"));
+
+      if (value % 2 != 0) {
+        return;
+      }
+
+      const delta = performance.now() - prev;
+      prev = performance.now();
+      if (1500 <= delta && delta <= 2500) {
+        if (playerInfo.data!.currentTime < value) {
+          return;
+        }
+      }
+
       setPlayerInfo("data", {
         paused: video.paused,
-        currentTime: value + offset,
+        currentTime: value,
       });
 
       if (timer) {
@@ -47,9 +60,9 @@ export const usePlayerInfo = () => {
         }
         setPlayerInfo("data", {
           paused: video.paused,
-          currentTime: (performance.now() - time) / 1000 + value + offset,
+          currentTime: (performance.now() - time) / 1000 + value,
         });
-      }, 50);
+      }, 100);
     };
 
     observer = new MutationObserver(handler);
@@ -59,6 +72,7 @@ export const usePlayerInfo = () => {
       attributeFilter: ["value"],
       subtree: false,
     });
+    handler();
   });
 
   onCleanup(() => {
