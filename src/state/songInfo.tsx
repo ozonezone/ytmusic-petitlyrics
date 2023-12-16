@@ -1,19 +1,23 @@
-import { onCleanup, onMount } from "solid-js";
-import { createStore } from "solid-js/store";
+import { atom, useAtomValue, useSetAtom } from "jotai";
+import { useEffect } from "react";
 
 export type SongInfo = {
-  data?: {
-    title: string;
-    artist: string[];
-    album?: string;
-  };
+  title: string;
+  artist: string[];
+  album?: string;
 };
 
-export const useSongInfo = () => {
-  const [songInfo, setSongInfo] = createStore<SongInfo>({});
+const songInfoAtom = atom<SongInfo | null>(null);
 
-  let observer: MutationObserver;
-  onMount(() => {
+export const useSongInfo = () => {
+  const songInfo = useAtomValue(songInfoAtom);
+  return songInfo;
+};
+
+export const SongInfoProvider = () => {
+  const setSongInfo = useSetAtom(songInfoAtom);
+
+  useEffect(() => {
     const songInfoElement = document.querySelector(
       ".ytmusic-player-bar .content-info-wrapper",
     );
@@ -43,23 +47,24 @@ export const useSongInfo = () => {
           }
         }
       });
-      setSongInfo("data", {
+      setSongInfo({
         title,
         artist,
         album,
       });
     };
-    observer = new MutationObserver(handler);
+    const observer = new MutationObserver(handler);
     observer.observe(songInfoElement, {
       childList: true,
       subtree: true,
     });
 
     handler();
-  });
-  onCleanup(() => {
-    observer?.disconnect();
-  });
 
-  return songInfo;
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return <></>;
 };

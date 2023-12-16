@@ -24,6 +24,7 @@ export const NumberForm = (
         type="number"
         value={props.value}
         onInput={(e) => {
+          if (isNaN(e.currentTarget.valueAsNumber)) return;
           props.setter(e.currentTarget.valueAsNumber);
         }}
       />
@@ -59,8 +60,8 @@ export const RadioGroup = (
 ) => {
   return (
     <div>
-      {props.options.map((option) => (
-        <label>
+      {props.options.map((option, i) => (
+        <label key={i}>
           <input
             type="radio"
             value={option}
