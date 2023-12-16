@@ -43,7 +43,7 @@ export const useSongConfig = () => {
     if (cached) {
       setSongConfigRaw(cached);
     } else {
-      setSongConfigRaw(defaultSettings);
+      setSongConfigRaw(structuredClone(defaultSettings));
     }
   });
 

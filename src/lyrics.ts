@@ -45,7 +45,9 @@ const fetchLyrices = async (query: LyricsQuery): Promise<LyricsResult> => {
     });
   } catch (e) {
     try {
-      console.log("Falling back to no album");
+      message.push(
+        "Failed to search song. Falling back to search without album" + e,
+      );
       searchData = await search({
         key_artist: query.artist?.[0],
         key_title: query.title,
@@ -102,7 +104,6 @@ export const getLyrics = async (query: LyricsQuery) => {
   if (cached && cached.success) {
     return cached;
   } else {
-    console.log("Fetching: " + key);
     const fetched = await fetchLyrices(query);
     GM_setValue(key, fetched);
     return fetched;

@@ -6,8 +6,10 @@ export const SongSettings = () => {
     <>
       <NumberForm
         value={songConfig.data!.offset}
-        label="Align"
-        setter={(v) => setSongConfig("data", "offset", v)}
+        label="Offset"
+        setter={(v) => {
+          setSongConfig("data", "offset", v);
+        }}
       />
     </>
   );
