@@ -10,6 +10,7 @@ export const WordSyncLyrics = (
   const playerInfo = usePlayerInfo();
 
   const offset = createMemo(() => {
+    console.log(songConfig.data?.offset);
     return (songConfig.data?.offset ?? 0) + globalSettings.behavior.offset;
   });
 
@@ -19,7 +20,7 @@ export const WordSyncLyrics = (
     for (let line of props.lyrics.data.wsy.line) {
       let word_idx = 0;
       for (let word of line.word) {
-        if (word.starttime > (crr + offset()) * 1000) {
+        if (word.endtime > (crr + offset()) * 1000) {
           return [line_idx, word_idx] as const;
         }
         word_idx++;
