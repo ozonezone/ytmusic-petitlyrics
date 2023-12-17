@@ -16,14 +16,19 @@ import { LyricsViewer } from "./lyricsViewer";
 import { Settings } from "./settings";
 
 import "./index.css";
+import { useSongConfig } from "../state/songConfig";
 
 const ToolbarButton = (props: {
   children: React.ReactNode;
+  className?: string;
   onClick: () => void;
 }) => {
   return (
     <button
-      className="yp-bg-transparent yp-border-none yp-text-white yp-w-6 yp-h-6"
+      className={clsx(
+        "yp-bg-transparent yp-border-none yp-text-white yp-w-8 yp-h-8",
+        props.className,
+      )}
       onClick={props.onClick}
     >
       {props.children}
@@ -54,11 +59,11 @@ export const AppIndex = (props: { controlParent: Element }) => {
       {show && (
         <div
           className={clsx(
-            "yp-flex yp-flex-col yp-fixed yp-h-[calc(100vh-var(--ytmusic-nav-bar-height)-var(--ytmusic-player-bar-height))]",
-            "yp-top-[var(--ytmusic-nav-bar-height)] yp-right-0 yp-z-[4] yp-py-3 yp-px-3 yp-[font-size:large] yp-box-border yp-text-base",
+            "yp-flex yp-flex-col yp-fixed yp-h-[calc(100vh-var(--ytmusic-nav-bar-height)-var(--ytmusic-player-bar-height)-2px)]",
+            "yp-top-[var(--ytmusic-nav-bar-height)] yp-right-0 yp-z-[3] yp-pt-3 yp-px-3 yp-[font-size:large] yp-box-border yp-text-base",
             "yp-text-white",
             {
-              "yp-w-full": fullWidth,
+              "yp-w-[calc(100%-72px)]": fullWidth,
               "yp-w-[400px]": !fullWidth,
             },
           )}
@@ -67,29 +72,30 @@ export const AppIndex = (props: { controlParent: Element }) => {
               `rgba(0, 0, 0, ${globalConfig.appearance.opacity})`,
           }}
         >
-          <div className="yp-flex yp-flex-col">
-            <div className="yp-flex yp-items-center">
-              <p style={{ color: "gray" }}>YTMusic petitlyrics</p>
+          <div className="yp-flex yp-flex-col yp-mb-2">
+            <div className="yp-flex yp-items-center yp-border-solid yp-border-b yp-border-gray-500 yp-pb-1">
+              <p className="yp-text-gray-500">YTMusic petitlyrics</p>
               <ToolbarButton
+                className="yp-ml-auto"
                 onClick={() => {
                   setShowSettings(!showSettings);
                 }}
               >
-                <IconSettings width="15px" height="15px" />
+                <IconSettings width="20px" height="20px" />
               </ToolbarButton>
               <ToolbarButton
                 onClick={() => {
                   setFullWidth(!fullWidth);
                 }}
               >
-                <IconFullscreen width="15px" height="15px" />
+                <IconFullscreen width="20px" height="20px" />
               </ToolbarButton>
               <ToolbarButton
                 onClick={() => {
                   setShow(false);
                 }}
               >
-                <IconCloseSidebar width="15px" height="15px" />
+                <IconCloseSidebar width="20px" height="20px" />
               </ToolbarButton>
             </div>
             <div
@@ -108,29 +114,53 @@ export const AppIndex = (props: { controlParent: Element }) => {
   );
 };
 
+const Center = (props: { children: React.ReactNode }) => {
+  return (
+    <div className="yp-flex yp-justify-center yp-items-center yp-h-full">
+      {props.children}
+    </div>
+  );
+};
+
 function LyricsLoader() {
   const songInfo = useSongInfo();
+  const _songConfig = useSongConfig();
+  const songConfig = _songConfig ? _songConfig[0] : null;
 
-  const { data: songData, isLoading } = useSWR(songInfo, async (song) => {
-    if (!song.artist && !song.title && !song.album) {
-      return null;
-    }
+  const { data: songData, isLoading } = useSWR(
+    [songInfo, songConfig],
+    async ([song, config]) => {
+      if (!song || !config) {
+        return null;
+      }
+      if (!song.artist && !song.title && !song.album) {
+        return null;
+      }
 
-    return await getLyrics(song);
-  });
+      return await getLyrics({
+        ...song,
+        lyricsId: config.lyricsIdOverride ?? undefined,
+      });
+    },
+  );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Center>
+        Loading...
+      </Center>
+    );
   }
   if (!songData) {
-    return <div>No song</div>;
+    return <Center>No song</Center>;
   }
   if (songData.success) {
     return <LyricsViewer data={songData} />;
   } else {
     return (
-      <div>
-        Error: {songData.message.join(", ")}
+      <div className="yp-flex yp-items-center yp-h-full">
+        Error: <br />
+        {songData.message.map((msg, i) => <p key={i}>{msg.toString()}</p>)}
       </div>
     );
   }

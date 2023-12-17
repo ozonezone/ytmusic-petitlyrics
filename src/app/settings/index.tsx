@@ -6,20 +6,18 @@ export const Settings = () => {
   const songConfig = useSongConfig();
 
   return (
-    <div className="yp-flex yp-flex-col yp-border yp-border-white yp-mt-1 yp-pb-3 yp-border-solid">
-      <div>
-        <h4 className="yp-bg-black yp-w-fit yp-translate-y-[-50%]">
-          Config
-        </h4>
-      </div>
-      <div className="yp-border yp-border-white yp-mb-1 yp-p-2">
+    <div className="yp-flex yp-flex-col yp-border yp-border-white yp-mt-3 yp-pb-3 yp-border-solid yp-px-2">
+      <h4 className="yp-bg-black yp-w-fit yp-translate-y-[-50%] yp-translate-x-2">
+        Config
+      </h4>
+      <div className="yp-border yp-border-white yp-border-solid yp-mb-1 yp-px-2 yp-pb-2">
         <p className="yp-bg-black yp-w-fit yp-translate-y-[-50%]">
           Global
         </p>
         <GlobalConfig />
       </div>
       {songConfig && (
-        <div className="yp-border yp-border-white yp-mb-1 yp-p-2">
+        <div className="yp-border yp-border-white yp-border-solid yp-pb-2 yp-px-2 yp-mt-2">
           <p className="yp-bg-black yp-w-fit yp-translate-y-[-50%]">
             Song
           </p>

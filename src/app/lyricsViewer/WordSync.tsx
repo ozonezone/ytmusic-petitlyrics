@@ -5,11 +5,11 @@ import { WordSyncLyricsData } from "../../lib/lyrics";
 import { usePlayerInfo } from "../../state/playerInfo";
 import { useAtomValue } from "jotai";
 import { globalConfigAtom } from "../../state/globalConfig";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSongConfig } from "../../state/songConfig";
 
 export const WordSyncLyrics = (
-  props: { lyrics: WordSyncLyricsData },
+  props: { lyrics: WordSyncLyricsData; syncMode: "word" | "line" },
 ) => {
   const playerInfo = usePlayerInfo();
   const [songConfig] = useSongConfig()!;
@@ -17,36 +17,40 @@ export const WordSyncLyrics = (
 
   const offset = songConfig.offset + globalConfig.behavior.offset;
 
-  const pos = (() => {
-    const crr = playerInfo?.currentTime ?? 0;
-    let line_idx = 0;
-    for (let line of props.lyrics.data.wsy.line) {
-      let word_idx = 0;
-      for (let word of line.word) {
-        if (word.endtime > (crr + offset) * 1000) {
-          return [line_idx, word_idx] as const;
-        }
-        word_idx++;
-      }
-      line_idx++;
-    }
+  const posInfo = props.lyrics.data.wsy.line.map((line, i) => {
+    return line.word.map((word, j) => {
+      return {
+        line: i,
+        word: j,
+        start: word.starttime,
+        end: word.endtime,
+      };
+    });
+  }).flat();
 
-    return [
-      props.lyrics.data.wsy.line.length - 1,
-      props.lyrics.data.wsy.line[props.lyrics.data.wsy.line.length - 1].word
-        .length - 1,
-    ] as const;
+  const pos: {
+    line: number;
+    word: number;
+    start: number;
+    end: number;
+  } | null = (() => {
+    const crr = ((playerInfo?.currentTime ?? 0) + offset) * 1000;
+    const idx = posInfo.findIndex((p) => p.start > crr);
+    return posInfo[idx - 1];
   })();
-  const linePos = pos[0];
+  const linePos = useMemo(() => pos?.line, [pos]);
+  const wordPos = useMemo(() => pos?.word, [pos]);
 
   useEffect(() => {
-    const elm = document.getElementById("wsy-line-" + linePos);
+    if (linePos) {
+      const elm = document.getElementById("wsy-line-" + pos.line);
 
-    if (elm) {
-      elm.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+      if (elm) {
+        elm.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
     }
   }, [linePos]);
 
@@ -55,6 +59,7 @@ export const WordSyncLyrics = (
       <div
         style={{
           textAlign: globalConfig.appearance.align,
+          fontSize: globalConfig.appearance.fontSize,
         }}
         className="yp-overflow-y-scroll yp-h-full"
       >
@@ -64,30 +69,41 @@ export const WordSyncLyrics = (
             id={"wsy-line-" + i}
             key={i}
             className={clsx(
-              i === linePos
-                ? "yp-font-bold yp-txt-lg yp-py-2 yp-bg-gray-400/20"
-                : "",
+              {
+                "yp-text-lg yp-py-2 yp-bg-gray-200/10": i == linePos,
+              },
+              (props.syncMode == "line" && i >= linePos)
+                ? i == linePos ? "yp-text-white" : "yp-text-gray-700"
+                : "yp-text-gray-400",
             )}
+            style={{
+              fontSize: i == linePos
+                ? globalConfig.appearance.fontSize * 1.1
+                : globalConfig.appearance.fontSize,
+            }}
           >
-            {line.word.map((word, j) => (
-              <span
-                key={j}
-                style={{
-                  color: word.starttime <=
-                      ((playerInfo?.currentTime ?? 0) + offset) *
-                        1000
-                    ? "white"
-                    : "gray",
-                }}
-              >
-                {decode(word.wordstring) +
-                  " ".repeat(
-                    word.chanum - word.wordstring.length < 0
-                      ? 0
-                      : word.chanum - word.wordstring.length,
-                  )}
-              </span>
-            ))}
+            {line.word.map((word, j) => {
+              const space = word.chanum - word.wordstring.length < 0
+                ? 0
+                : word.chanum - word.wordstring.length;
+              const wordstring = decode(word.wordstring) + " ".repeat(space);
+
+              const active = props.syncMode == "word" &&
+                (i == linePos ? j <= wordPos : i < linePos);
+
+              return (
+                (
+                  <span
+                    key={j}
+                    className={clsx({
+                      "yp-text-white": active,
+                    })}
+                  >
+                    {wordstring}
+                  </span>
+                )
+              );
+            })}
 
             <br />
           </div>

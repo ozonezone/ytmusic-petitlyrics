@@ -8,9 +8,13 @@ export default {
       sm: "small",
       base: "medium",
       md: "medium",
-      xl: "large",
+      lg: "large",
+      xl: "x-large",
     },
   },
   plugins: [],
+  corePlugins: {
+    preflight: false,
+  },
   prefix: "yp-",
 };

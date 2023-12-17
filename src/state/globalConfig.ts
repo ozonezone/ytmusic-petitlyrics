@@ -1,6 +1,5 @@
 import { atomWithStorage } from "jotai/utils";
 import { getGmStorage } from "./gmStorage";
-import { useAtom } from "jotai";
 
 export type GlobalSettings = {
   appearance: {
@@ -10,6 +9,7 @@ export type GlobalSettings = {
   };
   behavior: {
     offset: number;
+    syncMode: "line" | "word" | "none";
   };
 };
 const defaultSettings: GlobalSettings = {
@@ -20,6 +20,7 @@ const defaultSettings: GlobalSettings = {
   },
   behavior: {
     offset: 0,
+    syncMode: "line",
   },
 };
 
@@ -27,4 +28,5 @@ export const globalConfigAtom = atomWithStorage(
   "globalConfig",
   defaultSettings,
   getGmStorage(),
+  { getOnInit: true },
 );

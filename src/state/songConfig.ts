@@ -1,20 +1,23 @@
 import { atomWithStorage } from "jotai/utils";
 import { SongInfo, useSongInfo } from "./songInfo";
 import { getGmStorage } from "./gmStorage";
-import { useAtom, WritableAtom } from "jotai";
+import { useAtom } from "jotai";
 
 const defaultConfig: SongConfig = {
   offset: 0,
+  lyricsIdOverride: null,
 };
 
 export type SongConfig = {
   offset: number;
+  lyricsIdOverride: number | null;
 };
 
 const songConfigAtom = atomWithStorage<Record<string, SongConfig>>(
   "songConfig",
   {},
   getGmStorage(),
+  { getOnInit: true },
 );
 
 const createKey = (info: SongInfo) => {

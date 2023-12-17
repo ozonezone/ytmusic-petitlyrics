@@ -31,35 +31,40 @@ export type LyricsQuery = {
   artist?: string[];
   album?: string;
   title?: string;
+  lyricsId?: number;
 };
 
 const fetchLyrices = async (query: LyricsQuery): Promise<LyricsResult> => {
   let message: Message = [];
   let searchData: SearchData;
-  try {
-    searchData = await search({
-      key_artist: query.artist?.[0],
-      key_title: query.title,
-      key_album: query.album,
-      maxCount: 10,
-    });
-  } catch (e) {
+
+  let lyricsId = query.lyricsId;
+  if (!lyricsId) {
     try {
-      message.push(
-        "Failed to search song. Falling back to search without album" + e,
-      );
       searchData = await search({
         key_artist: query.artist?.[0],
         key_title: query.title,
+        key_album: query.album,
         maxCount: 10,
       });
     } catch (e) {
-      message.push("Failed to search song (fallback)" + e);
-      return { success: false, message };
+      try {
+        message.push(
+          "Failed to search song. Falling back to search without album" + e,
+        );
+        searchData = await search({
+          key_artist: query.artist?.[0],
+          key_title: query.title,
+          maxCount: 10,
+        });
+      } catch (e) {
+        message.push("Failed to search song (fallback)" + e);
+        return { success: false, message };
+      }
+      lyricsId = searchData.response.songs.song?.[0]?.lyricsId;
     }
   }
 
-  const lyricsId = searchData.response.songs.song?.[0]?.lyricsId;
   if (!lyricsId) {
     message.push("No lyrics found");
     return { success: false, message };
@@ -74,7 +79,7 @@ const fetchLyrices = async (query: LyricsQuery): Promise<LyricsResult> => {
     };
   } catch (e) {
     message.push(
-      "Failed to search song. Falling back to non-sync lyrics." + e,
+      "Failed to get lyrics. Falling back to non-sync lyrics." + e,
     );
     try {
       return {

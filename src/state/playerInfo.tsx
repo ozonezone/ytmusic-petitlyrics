@@ -1,4 +1,4 @@
-import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { useSongInfo } from "./songInfo";
 
@@ -26,16 +26,18 @@ export const PlayerInfoProvider = () => {
     let startTime = video.currentTime;
     console.log("startTime", startTime);
 
-    const listener = () => {
+    const timer = setInterval(() => {
+      if (video.paused) {
+        return;
+      }
       setPlayerInfo({
         paused: video.paused,
         currentTime: video.currentTime - startTime,
       });
-    };
-    video.addEventListener("timeupdate", listener);
+    }, 100);
 
     return () => {
-      video.removeEventListener("timeupdate", listener);
+      clearInterval(timer);
     };
   }, [songInfo]);
 

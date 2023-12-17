@@ -6,8 +6,9 @@ import { globalConfigAtom } from "../../state/globalConfig";
 
 export const GlobalConfig = () => {
   const [globalConfig, setGlobalConfig] = useAtom(withImmer(globalConfigAtom));
+  console.log(globalConfig);
   return (
-    <>
+    <div className="yp-flex yp-flex-col yp-gap-2">
       <NumberForm
         value={globalConfig.appearance.opacity}
         label="Opacity"
@@ -37,6 +38,14 @@ export const GlobalConfig = () => {
           s.behavior.offset = v;
         }))}
       />
-    </>
+      <RadioForm
+        value={globalConfig.behavior.syncMode}
+        label="Sync"
+        options={["word", "line", "none"]}
+        setter={(v) => (setGlobalConfig((s) => {
+          s.behavior.syncMode = v as any;
+        }))}
+      />
+    </div>
   );
 };
