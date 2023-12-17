@@ -58,5 +58,3 @@ export const useSongConfig = () => {
     });
   }] as const;
 };
-
-// What is problem of above code?

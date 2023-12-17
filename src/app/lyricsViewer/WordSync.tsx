@@ -64,50 +64,70 @@ export const WordSyncLyrics = (
         className="yp-overflow-y-scroll yp-h-full"
       >
         <div style={{ "height": "50%" }} />
-        {props.lyrics.data.wsy.line.map((line, i) => (
-          <div
-            id={"wsy-line-" + i}
-            key={i}
-            className={clsx(
-              {
-                "yp-text-lg yp-py-2 yp-bg-gray-200/10": i == linePos,
-              },
-              (props.syncMode == "line" && i >= linePos)
-                ? i == linePos ? "yp-text-white" : "yp-text-gray-700"
-                : "yp-text-gray-400",
-            )}
-            style={{
-              fontSize: i == linePos
-                ? globalConfig.appearance.fontSize * 1.1
-                : globalConfig.appearance.fontSize,
-            }}
-          >
-            {line.word.map((word, j) => {
-              const space = word.chanum - word.wordstring.length < 0
-                ? 0
-                : word.chanum - word.wordstring.length;
-              const wordstring = decode(word.wordstring) + " ".repeat(space);
+        {props.lyrics.data.wsy.line.map((line, i) => {
+          let lineColor;
+          if (i < linePos) {
+            lineColor = "yp-text-gray-400";
+          } else if (i > linePos) {
+            lineColor = "yp-text-gray-600";
+          } else {
+            if (props.syncMode == "word") {
+              lineColor = "yp-text-gray-400";
+            } else {
+              lineColor = "yp-text-white";
+            }
+          }
+          const delta = Math.abs(i - linePos);
 
-              const active = props.syncMode == "word" &&
-                (i == linePos ? j <= wordPos : i < linePos);
+          let fontSizeScale = 1;
+          if (delta == 0) {
+            fontSizeScale = 1.2;
+          } else if (delta == 1) {
+            fontSizeScale = 1.1;
+          }
 
-              return (
-                (
-                  <span
-                    key={j}
-                    className={clsx({
-                      "yp-text-white": active,
-                    })}
-                  >
-                    {wordstring}
-                  </span>
-                )
-              );
-            })}
+          return (
+            <div
+              id={"wsy-line-" + i}
+              key={i}
+              className={clsx(
+                lineColor,
+                {
+                  "yp-text-lg yp-py-3": delta == 0,
+                  "yp-py-2": delta == 1,
+                  "yp-py-1": delta == 2,
+                },
+              )}
+              style={{
+                fontSize: globalConfig.appearance.fontSize * fontSizeScale,
+              }}
+            >
+              {line.word.map((word, j) => {
+                const space = word.chanum - word.wordstring.length < 0
+                  ? 0
+                  : word.chanum - word.wordstring.length;
+                const wordstring = decode(word.wordstring) + " ".repeat(space);
 
-            <br />
-          </div>
-        ))}
+                return (
+                  (
+                    <span
+                      key={j}
+                      className={clsx({
+                        "yp-text-white": props.syncMode == "word" &&
+                          i == linePos &&
+                          j <= wordPos,
+                      })}
+                    >
+                      {wordstring}
+                    </span>
+                  )
+                );
+              })}
+
+              <br />
+            </div>
+          );
+        })}
         <div style={{ "height": "50%" }} />
       </div>
     </div>

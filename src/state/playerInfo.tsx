@@ -24,7 +24,6 @@ export const PlayerInfoProvider = () => {
     }
 
     let startTime = video.currentTime;
-    console.log("startTime", startTime);
 
     const timer = setInterval(() => {
       if (video.paused) {
