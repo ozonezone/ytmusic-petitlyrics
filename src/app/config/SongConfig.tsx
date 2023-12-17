@@ -1,7 +1,7 @@
 import { useSongConfig } from "../../state/songConfig";
 import { NumberForm, NumberFormWithButton } from "./forms";
 
-export const SongSettings = () => {
+export const SongConfig = () => {
   const [songConfig, setSongConfig] = useSongConfig()!;
 
   return (

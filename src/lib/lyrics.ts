@@ -61,8 +61,9 @@ const fetchLyrices = async (query: LyricsQuery): Promise<LyricsResult> => {
         message.push("Failed to search song (fallback)" + e);
         return { success: false, message };
       }
-      lyricsId = searchData.response.songs.song?.[0]?.lyricsId;
     }
+
+    lyricsId = searchData.response.songs.song?.[0]?.lyricsId;
   }
 
   if (!lyricsId) {

@@ -1,5 +1,4 @@
 import { useAtomValue } from "jotai";
-import { NonSyncLyricsData } from "../../lib/lyrics";
 import { globalConfigAtom } from "../../state/globalConfig";
 
 export const NonSyncLyrics = (
@@ -11,6 +10,7 @@ export const NonSyncLyrics = (
       className="yp-overflow-y-scroll yp-h-full yp-whitespace-pre-wrap"
       style={{
         textAlign: globalConfig.appearance.align,
+        fontSize: globalConfig.appearance.fontSize,
       }}
     >
       {props.lyrics}

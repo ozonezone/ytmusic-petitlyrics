@@ -1,8 +1,8 @@
-import { GlobalConfig } from "./GlobalSettings";
-import { SongSettings } from "./SongSettings";
 import { useSongConfig } from "../../state/songConfig";
+import { GlobalConfig } from "./GlobalConfig";
+import { SongConfig } from "./SongConfig";
 
-export const Settings = () => {
+export const Config = () => {
   const songConfig = useSongConfig();
 
   return (
@@ -21,7 +21,7 @@ export const Settings = () => {
           <p className="yp-bg-black yp-w-fit yp-translate-y-[-50%]">
             Song
           </p>
-          <SongSettings />
+          <SongConfig />
         </div>
       )}
     </div>

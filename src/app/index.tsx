@@ -13,10 +13,10 @@ import { globalConfigAtom } from "../state/globalConfig";
 import { useSongInfo } from "../state/songInfo";
 import { getLyrics } from "../lib/lyrics";
 import { LyricsViewer } from "./lyricsViewer";
-import { Settings } from "./settings";
 
 import "./index.css";
 import { useSongConfig } from "../state/songConfig";
+import { Config } from "./config";
 
 const ToolbarButton = (props: {
   children: React.ReactNode;
@@ -38,7 +38,7 @@ const ToolbarButton = (props: {
 
 export const AppIndex = (props: { controlParent: Element }) => {
   const [show, setShow] = useState(true);
-  const [showSettings, setShowSettings] = useState(true);
+  const [showSettings, setShowConfig] = useState(false);
   const [fullWidth, setFullWidth] = useState(false);
 
   const [globalConfig] = useAtom(globalConfigAtom);
@@ -78,7 +78,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
               <ToolbarButton
                 className="yp-ml-auto"
                 onClick={() => {
-                  setShowSettings(!showSettings);
+                  setShowConfig(!showSettings);
                 }}
               >
                 <IconSettings width="20px" height="20px" />
@@ -104,7 +104,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
                 showSettings ? "yp-block" : "yp-hidden",
               )}
             >
-              <Settings />
+              <Config />
             </div>
           </div>
           <LyricsLoader />

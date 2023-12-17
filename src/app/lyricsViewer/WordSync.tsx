@@ -55,7 +55,7 @@ export const WordSyncLyrics = (
   }, [linePos]);
 
   return (
-    <div style={{ height: "100%" }}>
+    <div className="yp-h-full">
       <div
         style={{
           textAlign: globalConfig.appearance.align,
