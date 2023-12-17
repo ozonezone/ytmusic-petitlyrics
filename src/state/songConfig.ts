@@ -3,7 +3,7 @@ import { SongInfo, useSongInfo } from "./songInfo";
 import { getGmStorage } from "./gmStorage";
 import { useAtom } from "jotai";
 
-const defaultConfig: SongConfig = {
+const defaultConfig = {
   offset: 0,
   lyricsIdOverride: null,
 };
@@ -11,6 +11,7 @@ const defaultConfig: SongConfig = {
 export type SongConfig = {
   offset: number;
   lyricsIdOverride: number | null;
+  key: string;
 };
 
 const songConfigAtom = atomWithStorage<Record<string, SongConfig>>(
@@ -48,7 +49,7 @@ export const useSongConfig = () => {
     return null;
   }
 
-  return [songConfig[key] ?? defaultConfig, (v: SongConfig) => {
+  return [songConfig[key] ?? defaultConfig, key, (v: SongConfig) => {
     setSongConfig((prev) => {
       return {
         ...prev,

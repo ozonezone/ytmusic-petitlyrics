@@ -59,7 +59,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
       {show && (
         <div
           className={clsx(
-            "yp-flex yp-flex-col yp-fixed yp-h-[calc(100vh-var(--ytmusic-nav-bar-height)-var(--ytmusic-player-bar-height)-2px)]",
+            "yp-flex yp-flex-col yp-fixed yp-h-[calc(100vh-var(--ytmusic-nav-bar-height)-var(--ytmusic-player-bar-height))]",
             "yp-top-[var(--ytmusic-nav-bar-height)] yp-right-0 yp-z-[3] yp-pt-3 yp-px-3 yp-[font-size:large] yp-box-border yp-text-base",
             "yp-text-white",
             {
