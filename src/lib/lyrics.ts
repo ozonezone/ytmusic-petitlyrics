@@ -101,17 +101,19 @@ export const getLyrics = async (query: LyricsQuery) => {
     return null;
   }
 
-  const key = "lyrics--" +
-    [query.artist ?? "", query.title ?? "", query.album ?? ""].join(
-      "--",
-    );
+  // const key = "lyrics--" +
+  //   [query.artist ?? "", query.title ?? "", query.album ?? ""].join(
+  //     "--",
+  //   );
+  //
+  // const cached = GM_getValue<LyricsResult>(key);
+  // if (cached && cached.success) {
+  //   return cached;
+  // } else {
+  //   const fetched = await fetchLyrices(query);
+  //   GM_setValue(key, fetched);
+  //   return fetched;
+  // }
 
-  const cached = GM_getValue<LyricsResult>(key);
-  if (cached && cached.success) {
-    return cached;
-  } else {
-    const fetched = await fetchLyrices(query);
-    GM_setValue(key, fetched);
-    return fetched;
-  }
+  return await fetchLyrices(query);
 };
