@@ -13,7 +13,8 @@ const id = setInterval(() => {
   const controlBefore = document.querySelector(
     "ytmusic-player-bar #like-button-renderer",
   );
-  if (controlBefore) {
+  const playerPage = document.getElementById("player-page");
+  if (controlBefore && playerPage) {
     clearInterval(id);
 
     const controlParent = document.createElement("div");
@@ -24,7 +25,7 @@ const id = setInterval(() => {
     ReactDOM.createRoot(
       (() => {
         const parent = document.createElement("div");
-        document.body.append(parent);
+        playerPage.append(parent);
         return parent;
       })(),
     ).render(
