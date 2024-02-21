@@ -32,7 +32,7 @@ export const LyricsViewer = (
 ) => {
   return (
     <>
-      <div className="yp-flex yp-font-md yp-pb-2 yp-border-solid yp-border-b-white yp-border-b yp-items-center yp-font-bold yp-gap-2">
+      <div className="yp-flex yp-font-md yp-pb-2 yp-border-solid yp-border-t-transparent yp-border-x-transparent yp-border-b-white yp-border-b yp-items-center yp-font-bold yp-gap-2">
         <div className="yp-flex yp-flex-col yp-items-center yp-flex-grow">
           <span>
             {decode(props.data.lyrics.metaData.title)}
@@ -46,7 +46,7 @@ export const LyricsViewer = (
             props.data.lyrics.metaData.lyricsId}
           target="_blank"
           rel="noreferrer noopener"
-          className="yp-h-7 yp-w-7 yp-mr-2"
+          className="yp-h-[20px] yp-w-[20px] yp-mr-2"
         >
           <IconLaunch width="18px" height="18px" color="#00aaff" />
         </a>

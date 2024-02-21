@@ -2,40 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { AppIndex } from "./app";
 import { Provider } from "./provider";
+import { backend } from "./backend";
 
-let count = 0;
-const id = setInterval(() => {
-  if (count > 30) {
-    console.log("Failed to find parent element in 30 tries.");
-    clearInterval(id);
-    return;
-  }
-  const controlBefore = document.querySelector(
-    "ytmusic-player-bar #like-button-renderer",
+(async () => {
+  const { control, player } = await backend.basic.init();
+  ReactDOM.createRoot(
+    (() => {
+      const parent = document.createElement("div");
+      player.append(parent);
+      return parent;
+    })(),
+  ).render(
+    <React.StrictMode>
+      <Provider>
+        <AppIndex controlParent={control} />
+      </Provider>
+    </React.StrictMode>,
   );
-  const playerPage = document.getElementById("player-page");
-  if (controlBefore && playerPage) {
-    clearInterval(id);
-
-    const controlParent = document.createElement("div");
-    controlBefore.after(controlParent);
-
-    console.log("Found parent element. Initializing.");
-
-    ReactDOM.createRoot(
-      (() => {
-        const parent = document.createElement("div");
-        playerPage.append(parent);
-        return parent;
-      })(),
-    ).render(
-      <React.StrictMode>
-        <Provider>
-          <AppIndex controlParent={controlParent} />
-        </Provider>
-      </React.StrictMode>,
-    );
-  } else {
-    count++;
-  }
-}, 400);
+})();

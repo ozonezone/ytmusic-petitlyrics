@@ -1,7 +1,8 @@
 import { atomWithStorage } from "jotai/utils";
-import { SongInfo, useSongInfo } from "./songInfo";
+import { useSongInfo } from "./songInfo";
 import { getGmStorage } from "./gmStorage";
 import { useAtom } from "jotai";
+import { SongInfo } from "../backend/type";
 
 const defaultConfig = {
   offset: 0,

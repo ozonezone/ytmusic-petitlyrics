@@ -1,11 +1,8 @@
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { useSongInfo } from "./songInfo";
-
-export type PlayerInfo = {
-  paused: boolean;
-  currentTime: number;
-};
+import { PlayerInfo } from "../backend/type";
+import { backend } from "../backend";
 
 const playerInfoAtom = atom<PlayerInfo | null>(null);
 
@@ -17,28 +14,11 @@ export const PlayerInfoProvider = () => {
   const setPlayerInfo = useSetAtom(playerInfoAtom);
   const songInfo = useSongInfo();
 
+  const playerInfo = backend.hooks.usePlayerInfo(songInfo);
+
   useEffect(() => {
-    const video = document.querySelector("video");
-    if (!video) {
-      return;
-    }
-
-    let startTime = video.currentTime;
-
-    const timer = setInterval(() => {
-      if (video.paused) {
-        return;
-      }
-      setPlayerInfo({
-        paused: video.paused,
-        currentTime: video.currentTime - startTime,
-      });
-    }, 100);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [songInfo]);
+    setPlayerInfo(playerInfo);
+  }, [playerInfo]);
 
   return <></>;
 };

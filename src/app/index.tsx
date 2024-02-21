@@ -17,6 +17,7 @@ import { LyricsViewer } from "./lyricsViewer";
 import "./index.css";
 import { useSongConfig } from "../state/songConfig";
 import { Config } from "./config";
+import { backend } from "../backend";
 
 const ToolbarButton = (props: {
   children: React.ReactNode;
@@ -66,6 +67,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
               "yp-w-full": fullWidth,
               "yp-w-[400px]": !fullWidth,
             },
+            backend.basic.rootElementClass,
           )}
           style={{
             backgroundColor:
@@ -73,8 +75,8 @@ export const AppIndex = (props: { controlParent: Element }) => {
           }}
         >
           <div className="yp-flex yp-flex-col yp-mb-2">
-            <div className="yp-flex yp-items-center yp-border-solid yp-border-b yp-border-gray-500 yp-pb-1">
-              <p className="yp-text-gray-500">YTMusic petitlyrics</p>
+            <div className="yp-flex yp-items-center yp-border-solid yp-border-t-transparent yp-border-x-transparent yp-border-b yp-border-gray-500 yp-pb-1">
+              <p className="yp-text-gray-500">petitlyrics</p>
               <ToolbarButton
                 className="yp-ml-auto"
                 onClick={() => {
@@ -158,8 +160,10 @@ function LyricsLoader() {
     return <LyricsViewer data={songData} />;
   } else {
     return (
-      <div className="yp-flex yp-items-center yp-h-full">
-        Error: <br />
+      <div className="yp-flex yp-flex-col yp-items-center yp-justify-center yp-h-full">
+        <p>
+          Error
+        </p>
         {songData.message.map((msg, i) => <p key={i}>{msg.toString()}</p>)}
       </div>
     );

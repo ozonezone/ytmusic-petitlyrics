@@ -1,4 +1,4 @@
-# ytmusic-petitlyrics
+# petitlyrics-inject
 
 Userscript to show text or line synced lyrics from petitlyrics on YouTube Music.
 
