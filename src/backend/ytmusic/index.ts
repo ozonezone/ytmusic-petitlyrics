@@ -29,4 +29,5 @@ export const ytmusic: BackendProviderBasic = {
       }, 400);
     });
   },
+  showByDefault: true
 };

@@ -27,7 +27,7 @@ const ToolbarButton = (props: {
   return (
     <button
       className={clsx(
-        "yp-bg-transparent yp-border-none yp-text-white yp-w-8 yp-h-8",
+        "yp-bg-transparent yp-border-none yp-text-white yp-w-8 yp-h-8 hover:yp-bg-gray-500/50",
         props.className,
       )}
       onClick={props.onClick}
@@ -38,7 +38,7 @@ const ToolbarButton = (props: {
 };
 
 export const AppIndex = (props: { controlParent: Element }) => {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(backend.basic.showByDefault);
   const [showSettings, setShowConfig] = useState(false);
   const [fullWidth, setFullWidth] = useState(false);
 
@@ -48,7 +48,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
     <div>
       {createPortal(
         <button
-          className="yp-h-[36px] yp-w-[36px] yp-ml-2 yp-bg-transparent yp-border-none yp-text-white"
+          className={clsx("yp-h-[36px] yp-w-[36px] yp-ml-2 yp-bg-transparent yp-border-none yp-text-white yp-flex yp-justify-center yp-items-center", backend.basic.controlButtonElementClass)}
           onClick={() => {
             setShow(!show);
           }}

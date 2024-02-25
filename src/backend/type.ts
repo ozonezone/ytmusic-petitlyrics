@@ -17,6 +17,8 @@ export type BackendProviderHooks = {
 export type BackendProviderBasic = {
   init: () => Promise<{ control: Element; player: Element }>;
   rootElementClass?: string;
+  controlButtonElementClass?: string;
+  showByDefault: boolean;
 };
 
 export type BackendProvider = {

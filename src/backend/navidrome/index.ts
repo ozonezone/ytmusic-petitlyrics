@@ -11,7 +11,7 @@ export const navidrome: BackendProviderBasic = {
           return;
         }
         const controlBefore = document.querySelector(
-          ".player-content .group",
+          "#react-admin-title",
         );
         const playerPage = document.querySelector("#root");
         if (controlBefore && playerPage) {
@@ -30,4 +30,6 @@ export const navidrome: BackendProviderBasic = {
     });
   },
   rootElementClass: "yp-h-[calc(100vh-80px-2.5rem)] yp-mt-10 [&_p]:yp-m-0",
+  controlButtonElementClass: "hover:yp-text-green-500",
+  showByDefault: false
 };
