@@ -33,7 +33,7 @@ export const LyricsViewer = (
   return (
     <>
       <div className="yp-flex yp-font-md yp-pb-2 yp-border-solid yp-border-t-transparent yp-border-x-transparent yp-border-b-white yp-border-b yp-items-center yp-font-bold yp-gap-2">
-        <div className="yp-flex yp-flex-col yp-items-center yp-flex-grow">
+        <div className="yp-flex yp-flex-col yp-items-center yp-flex-grow yp-text-center">
           <span>
             {decode(props.data.lyrics.metaData.title)}
           </span>

@@ -13,7 +13,9 @@ export const NonSyncLyrics = (
         fontSize: globalConfig.appearance.fontSize,
       }}
     >
-      {props.lyrics}
+      <p className="yp-py-12">
+        {props.lyrics}
+      </p>
     </div>
   );
 };

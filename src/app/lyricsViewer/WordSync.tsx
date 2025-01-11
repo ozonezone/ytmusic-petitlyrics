@@ -68,7 +68,7 @@ export const WordSyncLyrics = (
           let lineColor;
           if (i < linePos) {
             lineColor = "yp-text-gray-400";
-          } else if (i > linePos) {
+          } else if (!linePos || i > linePos) {
             lineColor = "yp-text-gray-600";
           } else {
             if (props.syncMode == "word") {
@@ -81,9 +81,9 @@ export const WordSyncLyrics = (
 
           let fontSizeScale = 1;
           if (delta == 0) {
-            fontSizeScale = 1.2;
+            fontSizeScale = 1.4;
           } else if (delta == 1) {
-            fontSizeScale = 1.1;
+            fontSizeScale = 1.3;
           }
 
           return (
@@ -92,10 +92,11 @@ export const WordSyncLyrics = (
               key={i}
               className={clsx(
                 lineColor,
+                "yp-py-2",
                 {
-                  "yp-text-lg yp-py-3": delta == 0,
-                  "yp-py-2": delta == 1,
-                  "yp-py-1": delta == 2,
+                  "yp-py-6": delta == 0,
+                  "yp-py-5": delta == 1,
+                  "yp-py-4": delta == 2,
                 },
               )}
               style={{
