@@ -18,6 +18,7 @@ import "./index.css";
 import { useSongConfig } from "../state/songConfig";
 import { Config } from "./config";
 import { backend } from "../backend";
+import { withImmer } from "jotai-immer";
 
 const ToolbarButton = (props: {
   children: React.ReactNode;
@@ -34,6 +35,36 @@ const ToolbarButton = (props: {
     >
       {props.children}
     </button>
+  );
+};
+
+const OffsetSelector = () => {
+  const [globalConfig, setGlobalConfig] = useAtom(withImmer(globalConfigAtom));
+
+  const setOffsetDiff = (v: number) => (setGlobalConfig((s) => {
+    s.behavior.offset = ((s.behavior.offset * 100) + v * 100) / 100;
+  }));
+
+  return (
+    <div className="yp-flex yp-pl-2">
+      <ToolbarButton
+        className="!yp-w-8"
+        onClick={() => {
+          setOffsetDiff(-0.05);
+        }}
+      >
+        {"<"}
+      </ToolbarButton>
+      <span>{globalConfig.behavior.offset}</span>
+      <ToolbarButton
+        className="!yp-w-8"
+        onClick={() => {
+          setOffsetDiff(0.05);
+        }}
+      >
+        {">"}
+      </ToolbarButton>
+    </div>
   );
 };
 
@@ -80,6 +111,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
           <div className="yp-flex yp-flex-col yp-mb-2">
             <div className="yp-flex yp-items-center yp-border-solid yp-border-t-transparent yp-border-x-transparent yp-border-b yp-border-gray-500 yp-pb-1 yp-gap-1">
               <p className="yp-text-gray-500">petitlyrics</p>
+              <OffsetSelector />
               <ToolbarButton
                 className="yp-ml-auto"
                 onClick={() => {

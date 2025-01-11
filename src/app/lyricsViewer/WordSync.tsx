@@ -68,7 +68,7 @@ export const WordSyncLyrics = (
           let lineColor;
           if (i < linePos) {
             lineColor = "yp-text-gray-400";
-          } else if (!linePos || i > linePos) {
+          } else if (linePos === undefined || i > linePos) {
             lineColor = "yp-text-gray-600";
           } else {
             if (props.syncMode == "word") {
