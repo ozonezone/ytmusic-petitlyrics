@@ -61,7 +61,7 @@ export const WordSyncLyrics = (
           textAlign: globalConfig.appearance.align,
           fontSize: globalConfig.appearance.fontSize,
         }}
-        className="yp-overflow-y-scroll yp-h-full"
+        className="yp-overflow-y-scroll yp-h-full [scrollbar-width:none]"
       >
         <div style={{ "height": "50%" }} />
         {props.lyrics.data.wsy.line.map((line, i) => {
