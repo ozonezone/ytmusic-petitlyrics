@@ -27,7 +27,7 @@ const ToolbarButton = (props: {
   return (
     <button
       className={clsx(
-        "yp-bg-transparent yp-border-none yp-text-white yp-w-8 yp-h-8 hover:yp-bg-gray-500/50",
+        "yp-bg-white/10 yp-border-none yp-text-white yp-w-14 yp-h-8 hover:yp-bg-gray-500/50",
         props.className,
       )}
       onClick={props.onClick}
@@ -48,7 +48,10 @@ export const AppIndex = (props: { controlParent: Element }) => {
     <div>
       {createPortal(
         <button
-          className={clsx("yp-h-[36px] yp-w-[36px] yp-ml-2 yp-bg-transparent yp-border-none yp-text-white yp-flex yp-justify-center yp-items-center", backend.basic.controlButtonElementClass)}
+          className={clsx(
+            "yp-h-[36px] yp-w-[36px] yp-ml-2 yp-bg-transparent yp-border-none yp-text-white yp-flex yp-justify-center yp-items-center",
+            backend.basic.controlButtonElementClass,
+          )}
           onClick={() => {
             setShow(!show);
           }}
@@ -75,7 +78,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
           }}
         >
           <div className="yp-flex yp-flex-col yp-mb-2">
-            <div className="yp-flex yp-items-center yp-border-solid yp-border-t-transparent yp-border-x-transparent yp-border-b yp-border-gray-500 yp-pb-1">
+            <div className="yp-flex yp-items-center yp-border-solid yp-border-t-transparent yp-border-x-transparent yp-border-b yp-border-gray-500 yp-pb-1 yp-gap-1">
               <p className="yp-text-gray-500">petitlyrics</p>
               <ToolbarButton
                 className="yp-ml-auto"
