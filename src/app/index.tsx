@@ -4,7 +4,8 @@ import { createPortal } from "react-dom";
 import { clsx } from "clsx";
 import { useAtom } from "jotai";
 
-import IconLyrics from "~icons/ic/baseline-lyrics";
+import IconLyricsOutline from "~icons/ic/outline-lyrics";
+import IconLyricsBaseline from "~icons/ic/baseline-lyrics";
 import IconSettings from "~icons/ic/baseline-settings";
 import IconFullscreen from "~icons/ic/baseline-fullscreen";
 import IconCloseSidebar from "~icons/tabler/layout-sidebar-right-collapse";
@@ -67,14 +68,16 @@ export const AppIndex = (props: { controlParent: Element }) => {
         <button
           id="petitlyrics-control-button"
           className={clsx(
-            "yp:h-9 yp:w-9 yp:ml-2 yp:bg-transparent yp:border-none yp:text-white yp:flex yp:justify-center yp:items-center",
+            "yp:h-9 yp:w-9 yp:ml-2 yp:lg:ml-6 yp:bg-transparent yp:border-none yp:text-white yp:flex yp:justify-center yp:items-center",
             backend.basic.controlButtonElementClass,
           )}
           onClick={() => {
             setShow(!show);
           }}
         >
-          <IconLyrics height="20px" width="20px" />
+          {show
+            ? <IconLyricsBaseline height="24px" width="24px" />
+            : <IconLyricsOutline height="24px" width="24px" />}
         </button>,
         props.controlParent,
       )}
@@ -86,6 +89,9 @@ export const AppIndex = (props: { controlParent: Element }) => {
             "yp:top-0 yp:right-0 yp:z-3 yp:pt-3 yp:px-3 yp:text-lg yp:box-border",
             "yp:text-white",
             backend.basic.rootElementClass,
+            {
+              "yp:resize-x": !fullWidth,
+            },
           )}
           style={{
             backgroundColor:
