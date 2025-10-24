@@ -8,6 +8,8 @@ import IconLyrics from "~icons/ic/baseline-lyrics";
 import IconSettings from "~icons/ic/baseline-settings";
 import IconFullscreen from "~icons/ic/baseline-fullscreen";
 import IconCloseSidebar from "~icons/tabler/layout-sidebar-right-collapse";
+import IconChevronLeft from "~icons/ic/baseline-chevron-left";
+import IconChevronRight from "~icons/ic/baseline-chevron-right";
 
 import { globalConfigAtom } from "../state/globalConfig";
 import { useSongInfo } from "../state/songInfo";
@@ -29,25 +31,26 @@ const OffsetSelector = () => {
   }));
 
   return (
-    <div className="yp:flex yp:pl-2">
+    <>
       <DefaultButton
-        className="yp:w-8!"
+        className="yp:ml-5"
         onClick={() => {
           setOffsetDiff(-0.05);
         }}
       >
-        {"<"}
+        <IconChevronLeft />
       </DefaultButton>
-      <span>{globalConfig.behavior.offset}</span>
+      <span className="yp:w-15 yp:text-center">
+        {globalConfig.behavior.offset.toFixed(2)}
+      </span>
       <DefaultButton
-        className="yp:w-8!"
         onClick={() => {
           setOffsetDiff(0.05);
         }}
       >
-        {">"}
+        <IconChevronRight />
       </DefaultButton>
-    </div>
+    </>
   );
 };
 
@@ -64,7 +67,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
         <button
           id="petitlyrics-control-button"
           className={clsx(
-            "yp:h-[36px] yp:w-[36px] yp:ml-2 yp:bg-transparent yp:border-none yp:text-white yp:flex yp:justify-center yp:items-center",
+            "yp:h-9 yp:w-9 yp:ml-2 yp:bg-transparent yp:border-none yp:text-white yp:flex yp:justify-center yp:items-center",
             backend.basic.controlButtonElementClass,
           )}
           onClick={() => {
@@ -80,7 +83,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
           id="petitlyrics-root"
           className={clsx(
             "yp:flex yp:flex-col yp:fixed yp:h-full",
-            "yp:top-0 yp:right-0 yp:z-3 yp:pt-3 yp:px-3 yp:text-lg yp:box-border yp:text-base",
+            "yp:top-0 yp:right-0 yp:z-3 yp:pt-3 yp:px-3 yp:text-lg yp:box-border",
             "yp:text-white",
             {
               "yp:w-full": fullWidth,
@@ -93,8 +96,8 @@ export const AppIndex = (props: { controlParent: Element }) => {
               `rgba(0, 0, 0, ${globalConfig.appearance.opacity})`,
           }}
         >
-          <div className="yp:flex yp:flex-col yp:mb-2">
-            <div className="yp:flex yp:items-center yp:border-solid yp:border-t-transparent yp:border-x-transparent yp:border-b yp:border-gray-500 yp:pb-1 yp:gap-1">
+          <div className="yp:flex yp:flex-col">
+            <div className="yp:flex yp:items-center yp:border-b yp:border-gray-500 yp:gap-3 yp:justify-center">
               <p className="yp:text-gray-500">petitlyrics</p>
               <OffsetSelector />
               <DefaultButton
