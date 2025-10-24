@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 
 import react from "@vitejs/plugin-react";
-import monkey, { cdn } from "vite-plugin-monkey";
+import monkey from "vite-plugin-monkey";
 import Icons from "unplugin-icons/vite";
 import tailwindcss from "@tailwindcss/vite";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
@@ -14,6 +14,7 @@ const backend = process.env.VITE_BACKEND;
 if (!backend) {
   throw new Error("VITE_BACKEND is not set");
 }
+const minify = process.env.MINIFY === "true";
 
 let userscript: { namespace: string; match: string[]; name: string };
 switch (backend) {
@@ -49,9 +50,12 @@ export default defineConfig({
       userscript,
       server: { mountGmApi: true },
       build: {
-        fileName: `${userscript.name}.user.js`,
+        fileName: `${userscript.name}${minify ? ".min" : ""}.user.js`,
       },
     }),
     cssInjectedByJsPlugin(),
   ],
+  build: {
+    minify,
+  },
 });

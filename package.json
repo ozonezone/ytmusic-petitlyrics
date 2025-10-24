@@ -8,9 +8,7 @@
   "scripts": {
     "dev": "VITE_BACKEND=ytmusic vite",
     "dev-nd": "VITE_BACKEND=navidrome vite",
-    "build": "tsc && VITE_BACKEND=ytmusic vite build",
-    "build-nd": "tsc && VITE_BACKEND=navidrome vite build",
-    "preview": "vite preview"
+    "build": "node build.js"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.5",
@@ -35,6 +33,7 @@
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
     "dotenv": "^17.2.3",
+    "shelljs": "^0.10.0",
     "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3",
     "unplugin-icons": "^22.5.0",
