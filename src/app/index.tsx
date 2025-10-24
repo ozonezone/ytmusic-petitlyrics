@@ -1,8 +1,8 @@
 import { useState } from "react";
-import useSWR from "swr";
 import { createPortal } from "react-dom";
 import { clsx } from "clsx";
 import { useAtom } from "jotai";
+import { useQuery } from "@tanstack/react-query";
 
 import IconLyricsOutline from "~icons/ic/outline-lyrics";
 import IconLyricsBaseline from "~icons/ic/baseline-lyrics";
@@ -155,22 +155,22 @@ function LyricsLoader() {
   const _songConfig = useSongConfig();
   const songConfig = _songConfig ? _songConfig[0] : null;
 
-  const { data: songData, isLoading } = useSWR(
-    [songInfo, songConfig],
-    async ([song, config]) => {
-      if (!song || !config) {
+  const { data: songData, isLoading } = useQuery({
+    queryKey: ["lyrics", JSON.stringify(songInfo), JSON.stringify(songConfig)],
+    queryFn: async () => {
+      if (!songInfo || !songConfig) {
         return null;
       }
-      if (!song.artist && !song.title && !song.album) {
+      if (!songInfo.artist && !songInfo.title && !songInfo.album) {
         return null;
       }
 
       return await getLyrics({
-        ...song,
-        lyricsId: config.lyricsIdOverride ?? undefined,
+        ...songInfo,
+        lyricsId: songConfig.lyricsIdOverride ?? undefined,
       });
     },
-  );
+  });
 
   if (isLoading) {
     return (

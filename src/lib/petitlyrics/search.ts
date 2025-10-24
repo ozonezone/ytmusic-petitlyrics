@@ -30,6 +30,5 @@ export type SearchParams = {
 };
 export const search = async (options: SearchParams) => {
   const res = await fetchApi(options);
-  console.log("Petitlyrics search result:", options, res);
   return v.parse(ResponseSchema, res);
 };

@@ -13,6 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.5",
     "@trim21/gm-fetch": "^0.3.0",
     "clsx": "^2.1.1",
     "fast-xml-parser": "^5.3.0",
@@ -22,7 +23,6 @@
     "js-base64": "^3.7.8",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "swr": "^2.3.6",
     "valibot": "^1.1.0"
   },
   "devDependencies": {
