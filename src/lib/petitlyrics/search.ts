@@ -5,19 +5,15 @@ const ResponseSchema = v.object({
   response: v.object({
     songs: v.object({
       song: v.optional(
-        v.coerce(
+        v.pipe(
+          v.any(),
+          v.transform((input) => (Array.isArray(input) ? input : [input])),
           v.array(v.object({
             lyricsId: v.number(),
             artist: v.string(),
             title: v.string(),
             album: v.string(),
           })),
-          (v) => {
-            if (!Array.isArray(v)) {
-              return [v];
-            }
-            return v;
-          },
         ),
       ),
     }),

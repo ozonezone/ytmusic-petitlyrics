@@ -76,9 +76,10 @@ export const AppIndex = (props: { controlParent: Element }) => {
   const [globalConfig] = useAtom(globalConfigAtom);
 
   return (
-    <div>
+    <div id="petitlyrics-app-index">
       {createPortal(
         <button
+          id="petitlyrics-control-button"
           className={clsx(
             "yp-h-[36px] yp-w-[36px] yp-ml-2 yp-bg-transparent yp-border-none yp-text-white yp-flex yp-justify-center yp-items-center",
             backend.basic.controlButtonElementClass,
@@ -93,6 +94,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
       )}
       {show && (
         <div
+          id="petitlyrics-root"
           className={clsx(
             "yp-flex yp-flex-col yp-fixed yp-h-full",
             "yp-top-0 yp-right-0 yp-z-[3] yp-pt-3 yp-px-3 yp-[font-size:large] yp-box-border yp-text-base",

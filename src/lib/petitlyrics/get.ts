@@ -6,7 +6,9 @@ const ResponseSchema = v.object({
   response: v.object({
     songs: v.object({
       song: v.optional(
-        v.coerce(
+        v.pipe(
+          v.any(),
+          v.transform((input) => (Array.isArray(input) ? input : [input])),
           v.array(
             v.object({
               lyricsId: v.number(),
@@ -16,12 +18,6 @@ const ResponseSchema = v.object({
               lyricsData: v.string(),
             }),
           ),
-          (v) => {
-            if (!Array.isArray(v)) {
-              return [v];
-            }
-            return v;
-          },
         ),
       ),
     }),
@@ -55,19 +51,19 @@ const WordSyncedLyricsDataSchema = v.object({
   wsy: v.object({
     line: v.array(v.object({
       linestring: v.string(),
-      word: v.coerce(
+      word: v.pipe(
+        v.any(),
+        v.transform((input) => (Array.isArray(input) ? input : [input])),
         v.array(v.object({
           starttime: v.number(),
           endtime: v.number(),
-          wordstring: v.coerce(v.string(), String),
+          wordstring: v.pipe(
+            v.any(),
+            v.transform((input) => String(input)),
+            v.string(),
+          ),
           chanum: v.number(),
         })),
-        (v) => {
-          if (!Array.isArray(v)) {
-            return [v];
-          }
-          return v;
-        },
       ),
     })),
   }),
