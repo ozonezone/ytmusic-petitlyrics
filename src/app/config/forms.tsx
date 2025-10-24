@@ -73,9 +73,14 @@ export const NumberFormWithButton = (
             return;
           }
         }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            props.setter(Number(ref.current?.value));
+          }
+        }}
       />
       <DefaultButton
-        className="yp:h-8 yp:col-span-1 yp:w-full yp:h-full"
+        className="yp:col-span-1 yp:w-full yp:h-full"
         onClick={() => {
           if (ref.current) {
             if (ref.current.value === "") {

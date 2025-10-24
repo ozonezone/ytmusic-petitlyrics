@@ -6,6 +6,7 @@ export type GlobalSettings = {
     fontSize: number;
     align: "left" | "right" | "center";
     opacity: number;
+    width: number;
   };
   behavior: {
     offset: number;
@@ -17,6 +18,7 @@ const defaultSettings: GlobalSettings = {
     fontSize: 20,
     align: "center",
     opacity: 0.8,
+    width: 400,
   },
   behavior: {
     offset: 0,

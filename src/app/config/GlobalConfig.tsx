@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { withImmer } from "jotai-immer";
 
-import { NumberForm, RadioForm } from "./forms";
+import { NumberForm, NumberFormWithButton, RadioForm } from "./forms";
 import { globalConfigAtom } from "../../state/globalConfig";
 
 export const GlobalConfig = () => {
@@ -14,6 +14,15 @@ export const GlobalConfig = () => {
         label="Opacity"
         setter={(v) => (setGlobalConfig((s) => {
           s.appearance.opacity = v;
+        }))}
+      />
+      <NumberFormWithButton
+        value={globalConfig.appearance.width}
+        label="Width"
+        setter={(v) => (setGlobalConfig((s) => {
+          if (v) {
+            s.appearance.width = v;
+          }
         }))}
       />
       <NumberForm

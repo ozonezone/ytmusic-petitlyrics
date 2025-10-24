@@ -85,15 +85,12 @@ export const AppIndex = (props: { controlParent: Element }) => {
             "yp:flex yp:flex-col yp:fixed yp:h-full",
             "yp:top-0 yp:right-0 yp:z-3 yp:pt-3 yp:px-3 yp:text-lg yp:box-border",
             "yp:text-white",
-            {
-              "yp:w-full": fullWidth,
-              "yp:w-[400px]": !fullWidth,
-            },
             backend.basic.rootElementClass,
           )}
           style={{
             backgroundColor:
               `rgba(0, 0, 0, ${globalConfig.appearance.opacity})`,
+            width: fullWidth ? "100%" : globalConfig.appearance.width + "px",
           }}
         >
           <div className="yp:flex yp:flex-col">
