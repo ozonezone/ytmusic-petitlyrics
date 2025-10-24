@@ -21,14 +21,15 @@ const ResponseSchema = v.object({
 });
 
 export type SearchParams = {
-  key_artist?: string;
-  key_album?: string;
-  key_title?: string;
+  key_artist: string;
+  key_album: string;
+  key_title: string;
   key_duration?: number;
   index?: number;
   maxCount: number;
 };
 export const search = async (options: SearchParams) => {
   const res = await fetchApi(options);
+  console.log("Petitlyrics search result:", options, res);
   return v.parse(ResponseSchema, res);
 };

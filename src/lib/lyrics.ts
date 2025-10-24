@@ -34,33 +34,32 @@ export type LyricsQuery = {
   lyricsId?: number;
 };
 
-const fetchLyrices = async (query: LyricsQuery): Promise<LyricsResult> => {
+const fetchLyrics = async (query: LyricsQuery): Promise<LyricsResult> => {
   let message: Message = [];
   let searchData: SearchData;
 
   let lyricsId = query.lyricsId;
   if (!lyricsId) {
-    try {
+    searchData = await search({
+      key_artist: query.artist?.[0] ?? "",
+      key_title: query.title ?? "",
+      key_album: query.album ?? "",
+      maxCount: 10,
+    });
+
+    if (
+      searchData.response.songs.song === undefined ||
+      searchData.response.songs.song.length === 0
+    ) {
+      message.push(
+        "No song found. Falling back to search without album",
+      );
       searchData = await search({
-        key_artist: query.artist?.[0],
-        key_title: query.title,
-        key_album: query.album,
+        key_artist: query.artist?.[0] ?? "",
+        key_title: query.title ?? "",
+        key_album: "",
         maxCount: 10,
       });
-    } catch (e) {
-      try {
-        message.push(
-          "Failed to search song. Falling back to search without album" + e,
-        );
-        searchData = await search({
-          key_artist: query.artist?.[0],
-          key_title: query.title,
-          maxCount: 10,
-        });
-      } catch (e) {
-        message.push("Failed to search song (fallback)" + e);
-        return { success: false, message };
-      }
     }
 
     lyricsId = searchData.response.songs.song?.[0]?.lyricsId;
@@ -115,5 +114,5 @@ export const getLyrics = async (query: LyricsQuery) => {
   //   return fetched;
   // }
 
-  return await fetchLyrices(query);
+  return await fetchLyrics(query);
 };
