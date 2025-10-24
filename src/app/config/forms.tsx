@@ -1,20 +1,22 @@
 import clsx from "clsx";
 import { useRef, useState } from "react";
+import { DefaultButton } from "../components/button";
 
 export const TextForm = (
   props: { value: string; label: string; setter: (v: string) => any },
 ) => {
   return (
-    <div style={{ display: "flex", gap: "5px" }}>
-      {props.label}:{" "}
+    <>
+      <p className="yp:col-span-2">{props.label}</p>
       <input
         type="text"
+        className="yp:col-span-3"
         value={props.value}
         onInput={(e) => {
           props.setter(e.currentTarget.value);
         }}
       />
-    </div>
+    </>
   );
 };
 export const NumberForm = (
@@ -22,13 +24,13 @@ export const NumberForm = (
 ) => {
   const [invalid, setInvalid] = useState(false);
   return (
-    <div className="yp-flex yp-gap-2">
-      {props.label}:{" "}
+    <>
+      <p className="yp:col-span-2">{props.label}</p>
       <input
         type="text"
         defaultValue={props.value}
-        className={clsx("focus:yp-outline", {
-          "yp-outline yp-outline-red-500": invalid,
+        className={clsx("yp:focus:outline yp:border-b yp:col-span-3", {
+          "yp:outline yp:outline-red-500": invalid,
         })}
         onInput={(e) => {
           const v = Number(e.currentTarget.value);
@@ -41,7 +43,7 @@ export const NumberForm = (
           }
         }}
       />
-    </div>
+    </>
   );
 };
 
@@ -55,13 +57,13 @@ export const NumberFormWithButton = (
   const [invalid, setInvalid] = useState(false);
   const ref = useRef<HTMLInputElement>(null);
   return (
-    <div className="yp-flex yp-gap-2">
-      {props.label}:{" "}
+    <>
+      <p className="yp:col-span-2">{props.label}</p>
       <input
         type="text"
         defaultValue={props.value ?? ""}
-        className={clsx("focus:yp-outline", {
-          "yp-outline yp-outline-red-500": invalid,
+        className={clsx("yp:focus:outline yp:border-b yp:col-span-2", {
+          "yp:outline yp:outline-red-500": invalid,
         })}
         ref={ref}
         onInput={(e) => {
@@ -72,7 +74,8 @@ export const NumberFormWithButton = (
           }
         }}
       />
-      <button
+      <DefaultButton
+        className="yp:h-8 yp:col-span-1 yp:w-full yp:h-full"
         onClick={() => {
           if (ref.current) {
             if (ref.current.value === "") {
@@ -87,8 +90,8 @@ export const NumberFormWithButton = (
         }}
       >
         Apply
-      </button>
-    </div>
+      </DefaultButton>
+    </>
   );
 };
 
@@ -101,14 +104,14 @@ export const RadioForm = (
   },
 ) => {
   return (
-    <div style={{ display: "flex", gap: "5px" }}>
-      {props.label}:{" "}
+    <>
+      <p className="yp:col-span-2">{props.label}</p>
       <RadioGroup
         value={props.value}
         onChange={(v) => props.setter(v)}
         options={props.options}
       />
-    </div>
+    </>
   );
 };
 
@@ -120,7 +123,7 @@ export const RadioGroup = (
   },
 ) => {
   return (
-    <div>
+    <div className="yp:col-span-3 yp:flex yp:gap-2">
       {props.options.map((option, i) => (
         <label key={i}>
           <input

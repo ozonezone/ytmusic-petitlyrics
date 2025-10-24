@@ -19,24 +19,7 @@ import { useSongConfig } from "../state/songConfig";
 import { Config } from "./config";
 import { backend } from "../backend";
 import { withImmer } from "jotai-immer";
-
-const ToolbarButton = (props: {
-  children: React.ReactNode;
-  className?: string;
-  onClick: () => void;
-}) => {
-  return (
-    <button
-      className={clsx(
-        "yp-bg-white/10 yp-border-none yp-text-white yp-w-14 yp-h-8 hover:yp-bg-gray-500/50",
-        props.className,
-      )}
-      onClick={props.onClick}
-    >
-      {props.children}
-    </button>
-  );
-};
+import { DefaultButton } from "./components/button";
 
 const OffsetSelector = () => {
   const [globalConfig, setGlobalConfig] = useAtom(withImmer(globalConfigAtom));
@@ -46,24 +29,24 @@ const OffsetSelector = () => {
   }));
 
   return (
-    <div className="yp-flex yp-pl-2">
-      <ToolbarButton
-        className="!yp-w-8"
+    <div className="yp:flex yp:pl-2">
+      <DefaultButton
+        className="yp:w-8!"
         onClick={() => {
           setOffsetDiff(-0.05);
         }}
       >
         {"<"}
-      </ToolbarButton>
+      </DefaultButton>
       <span>{globalConfig.behavior.offset}</span>
-      <ToolbarButton
-        className="!yp-w-8"
+      <DefaultButton
+        className="yp:w-8!"
         onClick={() => {
           setOffsetDiff(0.05);
         }}
       >
         {">"}
-      </ToolbarButton>
+      </DefaultButton>
     </div>
   );
 };
@@ -81,7 +64,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
         <button
           id="petitlyrics-control-button"
           className={clsx(
-            "yp-h-[36px] yp-w-[36px] yp-ml-2 yp-bg-transparent yp-border-none yp-text-white yp-flex yp-justify-center yp-items-center",
+            "yp:h-[36px] yp:w-[36px] yp:ml-2 yp:bg-transparent yp:border-none yp:text-white yp:flex yp:justify-center yp:items-center",
             backend.basic.controlButtonElementClass,
           )}
           onClick={() => {
@@ -96,12 +79,12 @@ export const AppIndex = (props: { controlParent: Element }) => {
         <div
           id="petitlyrics-root"
           className={clsx(
-            "yp-flex yp-flex-col yp-fixed yp-h-full",
-            "yp-top-0 yp-right-0 yp-z-[3] yp-pt-3 yp-px-3 yp-[font-size:large] yp-box-border yp-text-base",
-            "yp-text-white",
+            "yp:flex yp:flex-col yp:fixed yp:h-full",
+            "yp:top-0 yp:right-0 yp:z-3 yp:pt-3 yp:px-3 yp:text-lg yp:box-border yp:text-base",
+            "yp:text-white",
             {
-              "yp-w-full": fullWidth,
-              "yp-w-[400px]": !fullWidth,
+              "yp:w-full": fullWidth,
+              "yp:w-[400px]": !fullWidth,
             },
             backend.basic.rootElementClass,
           )}
@@ -110,37 +93,37 @@ export const AppIndex = (props: { controlParent: Element }) => {
               `rgba(0, 0, 0, ${globalConfig.appearance.opacity})`,
           }}
         >
-          <div className="yp-flex yp-flex-col yp-mb-2">
-            <div className="yp-flex yp-items-center yp-border-solid yp-border-t-transparent yp-border-x-transparent yp-border-b yp-border-gray-500 yp-pb-1 yp-gap-1">
-              <p className="yp-text-gray-500">petitlyrics</p>
+          <div className="yp:flex yp:flex-col yp:mb-2">
+            <div className="yp:flex yp:items-center yp:border-solid yp:border-t-transparent yp:border-x-transparent yp:border-b yp:border-gray-500 yp:pb-1 yp:gap-1">
+              <p className="yp:text-gray-500">petitlyrics</p>
               <OffsetSelector />
-              <ToolbarButton
-                className="yp-ml-auto"
+              <DefaultButton
+                className="yp:ml-auto"
                 onClick={() => {
                   setShowConfig(!showSettings);
                 }}
               >
                 <IconSettings width="20px" height="20px" />
-              </ToolbarButton>
-              <ToolbarButton
+              </DefaultButton>
+              <DefaultButton
                 onClick={() => {
                   setFullWidth(!fullWidth);
                 }}
               >
                 <IconFullscreen width="20px" height="20px" />
-              </ToolbarButton>
-              <ToolbarButton
+              </DefaultButton>
+              <DefaultButton
                 onClick={() => {
                   setShow(false);
                 }}
               >
                 <IconCloseSidebar width="20px" height="20px" />
-              </ToolbarButton>
+              </DefaultButton>
             </div>
             <div
               className={clsx(
-                "yp-mb-2",
-                showSettings ? "yp-block" : "yp-hidden",
+                "yp:mb-2",
+                showSettings ? "yp:block" : "yp:hidden",
               )}
             >
               <Config />
@@ -155,7 +138,7 @@ export const AppIndex = (props: { controlParent: Element }) => {
 
 const Center = (props: { children: React.ReactNode }) => {
   return (
-    <div className="yp-flex yp-justify-center yp-items-center yp-h-full">
+    <div className="yp:flex yp:justify-center yp:items-center yp:h-full">
       {props.children}
     </div>
   );
@@ -197,7 +180,7 @@ function LyricsLoader() {
     return <LyricsViewer data={songData} />;
   } else {
     return (
-      <div className="yp-flex yp-flex-col yp-items-center yp-justify-center yp-h-full">
+      <div className="yp:flex yp:flex-col yp:items-center yp:justify-center yp:h-full">
         <p>
           Error
         </p>

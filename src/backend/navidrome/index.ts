@@ -29,7 +29,7 @@ export const navidrome: BackendProviderBasic = {
       }, 400);
     });
   },
-  rootElementClass: "yp-h-[calc(100vh-80px-2.5rem)] yp-mt-10 [&_p]:yp-m-0",
-  controlButtonElementClass: "hover:yp-text-green-500",
+  rootElementClass: "yp:h-[calc(100vh-80px-2.5rem)] yp:mt-10 yp:[&_p]:m-0",
+  controlButtonElementClass: "yp:hover:text-green-500",
   showByDefault: false
 };

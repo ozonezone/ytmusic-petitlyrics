@@ -5,7 +5,7 @@ export const SongConfig = () => {
   const [songConfig, key, setSongConfig] = useSongConfig()!;
 
   return (
-    <div className="yp-flex yp-flex-col yp-gap-2">
+    <div className="yp:grid yp:grid-cols-5">
       <NumberForm
         value={songConfig.offset}
         label="Offset"

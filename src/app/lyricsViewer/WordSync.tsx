@@ -55,26 +55,26 @@ export const WordSyncLyrics = (
   }, [linePos]);
 
   return (
-    <div className="yp-h-full">
+    <div className="yp:h-full">
       <div
         style={{
           textAlign: globalConfig.appearance.align,
           fontSize: globalConfig.appearance.fontSize,
         }}
-        className="yp-overflow-y-scroll yp-h-full [scrollbar-width:none]"
+        className="yp:overflow-y-scroll yp:h-full yp:[scrollbar-width:none]"
       >
         <div style={{ "height": "50%" }} />
         {props.lyrics.data.wsy.line.map((line, i) => {
           let lineColor;
           if (i < linePos) {
-            lineColor = "yp-text-gray-400";
+            lineColor = "yp:text-gray-400";
           } else if (linePos === undefined || i > linePos) {
-            lineColor = "yp-text-gray-600";
+            lineColor = "yp:text-gray-600";
           } else {
             if (props.syncMode == "word") {
-              lineColor = "yp-text-gray-400";
+              lineColor = "yp:text-gray-400";
             } else {
-              lineColor = "yp-text-white";
+              lineColor = "yp:text-white";
             }
           }
           const delta = Math.abs(i - linePos);
@@ -92,11 +92,11 @@ export const WordSyncLyrics = (
               key={i}
               className={clsx(
                 lineColor,
-                "yp-py-2",
+                "yp:py-2",
                 {
-                  "yp-py-6": delta == 0,
-                  "yp-py-5": delta == 1,
-                  "yp-py-4": delta == 2,
+                  "yp:py-6": delta == 0,
+                  "yp:py-5": delta == 1,
+                  "yp:py-4": delta == 2,
                 },
               )}
               style={{
@@ -114,7 +114,7 @@ export const WordSyncLyrics = (
                     <span
                       key={j}
                       className={clsx({
-                        "yp-text-white": props.syncMode == "word" &&
+                        "yp:text-white": props.syncMode == "word" &&
                           i == linePos &&
                           j <= wordPos,
                       })}

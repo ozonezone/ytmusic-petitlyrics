@@ -8,7 +8,7 @@ export const GlobalConfig = () => {
   const [globalConfig, setGlobalConfig] = useAtom(withImmer(globalConfigAtom));
 
   return (
-    <div className="yp-flex yp-flex-col yp-gap-2">
+    <div className="yp:grid yp:grid-cols-5">
       <NumberForm
         value={globalConfig.appearance.opacity}
         label="Opacity"
