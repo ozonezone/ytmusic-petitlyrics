@@ -50,13 +50,6 @@ export default defineConfig({
       server: { mountGmApi: true },
       build: {
         fileName: `${userscript.name}.user.js`,
-        externalGlobals: {
-          react: cdn.jsdelivr("React", "umd/react.production.min.js"),
-          "react-dom": cdn.jsdelivr(
-            "ReactDOM",
-            "umd/react-dom.production.min.js",
-          ),
-        },
       },
     }),
     cssInjectedByJsPlugin(),
